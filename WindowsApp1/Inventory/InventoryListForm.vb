@@ -7,6 +7,7 @@ Public Class InventoryListForm ' Main Library System Form
     Dim conn As New MySqlConnection("server=localhost; userid=root; password=root; database=labact2")
 
     Private Sub FormLibrary_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        SetupInactivityTracking(Me)
         LoginForm.UpdateActivityTime()
         LoadBookData()
         ' Set initial button text for btnSaveBook (for Insert)
@@ -25,7 +26,7 @@ Public Class InventoryListForm ' Main Library System Form
             adapter.Fill(table)
             DGVLibrary.DataSource = table
         Catch ex As Exception
-            MessageBox.Show("Error loading book data: " & ex.Message)
+            MessageBox.Show("Error loading Part Number: " & ex.Message)
         Finally
             If conn.State = ConnectionState.Open Then conn.Close()
         End Try
@@ -61,7 +62,7 @@ Public Class InventoryListForm ' Main Library System Form
 
 
     Private Sub btnSaveBook_Click(sender As Object, e As EventArgs) Handles btnSaveBook.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         If Not ValidateBookFields() Then Exit Sub
 
         ' **NEW QUANTITY VALIDATION**
@@ -90,7 +91,7 @@ Public Class InventoryListForm ' Main Library System Form
                 AuditLogManager.LogAction(LoggedUsername, "Inventory System: Added new Part Number " & lastId & " (" & txtTitle.Text & ")")
             End Using
         Catch ex As Exception
-            MessageBox.Show("Error adding book: " & ex.Message)
+            MessageBox.Show("Error adding Part Number: " & ex.Message)
         Finally
             If conn.State = ConnectionState.Open Then conn.Close()
             LoadBookData()
@@ -102,7 +103,8 @@ Public Class InventoryListForm ' Main Library System Form
 
     ' **NEW Subroutine for the dedicated Update button**
     Private Sub btnUpdateBook_Click(sender As Object, e As EventArgs) Handles btnUpdateBook.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
+
         If Not ValidateBookFields() Then Exit Sub
 
         ' **NEW QUANTITY VALIDATION**
@@ -148,7 +150,8 @@ Public Class InventoryListForm ' Main Library System Form
 
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
+
         If String.IsNullOrEmpty(txtBookID.Text) Then
             MessageBox.Show("Select a part to delete first.", "Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
@@ -165,7 +168,7 @@ Public Class InventoryListForm ' Main Library System Form
                 cmd.Parameters.AddWithValue("@id", bookIdToDelete)
                 If cmd.ExecuteNonQuery() > 0 Then
                     MessageBox.Show("Part Number " & bookIdToDelete & " deleted successfully.")
-                    AuditLogManager.LogAction(LoggedUsername, "Library System: Deleted record for book ID " & bookIdToDelete)
+                    AuditLogManager.LogAction(LoggedUsername, "Library System: Deleted record for Part Number " & bookIdToDelete)
                 End If
             End Using
         Catch ex As Exception
@@ -179,7 +182,7 @@ Public Class InventoryListForm ' Main Library System Form
 
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         If String.IsNullOrEmpty(txtSearch.Text) Then
             LoadBookData()
             Exit Sub
@@ -227,11 +230,13 @@ Public Class InventoryListForm ' Main Library System Form
 
 
     Private Sub LogoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LogoutToolStripMenuItem.Click
-        AuditLogManager.LogAction(LoggedUsername, "Logged out from Library form.")
-        LoggedUsername = ""
-        LoggedUserRole = ""
-        Me.Close()
-        LoginForm.Show()
+
+        'AuditLogManager.LogAction(LoggedUsername, "Logged out from Library form.")
+        'LoggedUsername = ""
+        'LoggedUserRole = ""
+        'Me.Close()
+        'LoginForm.Show()
+        Logout(Me)
     End Sub
 
     Private Sub txtBookID_TextChanged(sender As Object, e As EventArgs) Handles txtBookID.TextChanged

@@ -14,6 +14,7 @@ Public Class AdminUserManagementForm ' Admin User Management Form
 
     ' Load DataGridView on load
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        SetupInactivityTracking(Me)
         LoginForm.UpdateActivityTime()
         If LoggedUserRole <> "Admin" Then
             MessageBox.Show("Access Denied. Only Administrators can view User Management.", "Security Alert", MessageBoxButtons.OK, MessageBoxIcon.Stop)
@@ -26,7 +27,7 @@ Public Class AdminUserManagementForm ' Admin User Management Form
 
     ' Helper to load/refresh User Data
     Private Sub LoadUserData()
-        Dim query As String = "SELECT id, username, role, status FROM user_tbl"
+        Dim query As String = "SELECT id, username, password, role, status FROM user_tbl"
         Try
             conn.Open()
             Dim adapter As New MySqlDataAdapter(query, conn)
@@ -43,7 +44,7 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     ' --- User Management CRUD with Audit Log ---
 
     Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         If Not ValidateIdInput() Then Exit Sub
 
         Dim userIdToRemove As Integer = Convert.ToInt32(txtID.Text)
@@ -76,7 +77,7 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     End Sub
 
     Private Sub btnUpdate_Click(sender As Object, e As EventArgs) Handles btnUpdate.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         If Not ValidateIdInput() Then Exit Sub
         If String.IsNullOrEmpty(cmbStatus.Text) OrElse String.IsNullOrEmpty(cmbRole.Text) Then
             MessageBox.Show("Please select a Status and Role to update.", "Input Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -132,12 +133,12 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     ' --- Navigation and Search ---
 
     Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         LoadUserData()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click ' Search button
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         If String.IsNullOrEmpty(txtID.Text) Then
             MessageBox.Show("Please enter a User ID or Username to search.", "Input Required")
             Exit Sub
@@ -172,6 +173,8 @@ Public Class AdminUserManagementForm ' Admin User Management Form
         If e.RowIndex >= 0 Then
             Dim row As DataGridViewRow = DGVUserAdmin.Rows(e.RowIndex)
             txtID.Text = row.Cells("id").Value.ToString()
+            txtusername.Text = row.Cells("username").Value.ToString()
+            txtPassword.Text = row.Cells("password").Value.ToString()
             cmbStatus.Text = row.Cells("status").Value.ToString()
             cmbRole.Text = row.Cells("role").Value.ToString()
         End If
@@ -184,87 +187,6 @@ Public Class AdminUserManagementForm ' Admin User Management Form
 
     ' --- Backup and Restore Implementation (Now using MYSQL_BIN_PATH) ---
 
-    Private Sub BackupToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BackupToolStripMenuItem.Click
-        LoginForm.UpdateActivityTime()
-        Using sfd As New SaveFileDialog()
-            sfd.Filter = "SQL Backup File (*.sql)|*.sql|All files (*.*)|*.*"
-            sfd.FileName = "labact2_backup_" & DateTime.Now.ToString("yyyyMMdd_HHmmss") & ".sql"
-            sfd.Title = "Save Database Backup File"
-
-            If sfd.ShowDialog() = DialogResult.OK Then
-                Dim backupFile As String = sfd.FileName
-                ' Arguments for mysqldump (using root credentials)
-                Dim arguments As String = String.Format("-u{0} -p{1} {2} -r ""{3}""", "root", "root", "labact2", backupFile)
-
-                Try
-                    ' FIX: Use the full path for mysqldump.exe
-                    Dim startInfo As New ProcessStartInfo()
-                    startInfo.FileName = MYSQL_BIN_PATH & "mysqldump.exe"
-                    startInfo.Arguments = arguments
-                    startInfo.CreateNoWindow = True
-                    startInfo.UseShellExecute = False
-                    startInfo.RedirectStandardError = True ' Capture errors
-
-                    Using process As Process = Process.Start(startInfo)
-                        process.WaitForExit()
-                        Dim errorOutput As String = process.StandardError.ReadToEnd()
-
-                        If process.ExitCode = 0 AndAlso String.IsNullOrEmpty(errorOutput) Then
-                            MessageBox.Show("Database backup successful! File saved to: " & backupFile, "Backup Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            AuditLogManager.LogAction(LoggedUsername, "Database Backup: Successful to " & backupFile)
-                        Else
-                            MessageBox.Show("Database backup failed. Error details: " & errorOutput & Environment.NewLine & "Check if path is correct: " & MYSQL_BIN_PATH, "Backup Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            AuditLogManager.LogAction(LoggedUsername, "Database Backup: Failed. Error: " & errorOutput, isSuccess:=False)
-                        End If
-                    End Using
-                Catch ex As Exception
-                    MessageBox.Show("Error executing mysqldump: " & ex.Message & Environment.NewLine & "Check if this path is correct: " & MYSQL_BIN_PATH, "Execution Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                End Try
-            End If
-        End Using
-    End Sub
-
-    Private Sub RestoreToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RestoreToolStripMenuItem.Click
-        LoginForm.UpdateActivityTime()
-        If MessageBox.Show("WARNING: Restoring the database will overwrite ALL current data in 'labact2'. Are you absolutely sure?", "Confirm Database Restore", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.No Then Exit Sub
-
-        Using ofd As New OpenFileDialog()
-            ofd.Filter = "SQL Backup File (*.sql)|*.sql"
-            ofd.Title = "Select Database Backup File to Restore"
-
-            If ofd.ShowDialog() = DialogResult.OK Then
-                Dim restoreFile As String = ofd.FileName
-                ' Arguments for mysql restore
-                Dim arguments As String = String.Format("-u{0} -p{1} {2} < ""{3}""", "root", "root", "labact2", restoreFile)
-
-                Try
-                    ' FIX: Use the full path for mysql.exe
-                    Dim startInfo As New ProcessStartInfo()
-                    startInfo.FileName = MYSQL_BIN_PATH & "mysql.exe"
-                    startInfo.Arguments = arguments
-                    startInfo.CreateNoWindow = True
-                    startInfo.UseShellExecute = False
-                    startInfo.RedirectStandardError = True ' Capture errors
-
-                    Using process As Process = Process.Start(startInfo)
-                        process.WaitForExit()
-                        Dim errorOutput As String = process.StandardError.ReadToEnd()
-
-                        If process.ExitCode = 0 AndAlso String.IsNullOrEmpty(errorOutput) Then
-                            MessageBox.Show("Database restore successful! Please refresh the form to view the restored data.", "Restore Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                            AuditLogManager.LogAction(LoggedUsername, "Database Restore: Successful from " & restoreFile)
-                            LoadUserData() ' Refresh DataGridView
-                        Else
-                            MessageBox.Show("Database restore failed. Error details: " & errorOutput & Environment.NewLine & "Check if path is correct: " & MYSQL_BIN_PATH, "Restore Failed", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            AuditLogManager.LogAction(LoggedUsername, "Database Restore: Failed. Error: " & errorOutput, isSuccess:=False)
-                        End If
-                    End Using
-                Catch ex As Exception
-                    MessageBox.Show("Error executing mysql restore: " & ex.Message & Environment.NewLine & "Check if this path is correct: " & MYSQL_BIN_PATH, "Execution Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                End Try
-            End If
-        End Using
-    End Sub
 
     ' --- Navigation Menu Clicks ---
 
@@ -283,12 +205,10 @@ Public Class AdminUserManagementForm ' Admin User Management Form
 
     Private Sub SettingsToolStripMenuItem_Click(sender As Object, e As EventArgs)
         LoginForm.UpdateActivityTime()
-        ' Assuming FormSettings exists
-        FormSettings.ShowDialog()
     End Sub
 
     Private Sub ViewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewToolStripMenuItem.Click
-        ' No implementation needed here based on prompt
+        ResetTimer()
     End Sub
 
     Private Sub UserDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserDatabaseToolStripMenuItem.Click
@@ -305,8 +225,27 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     End Sub
 
     Private Sub AddUserToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AddUserToolStripMenuItem.Click
+        ResetTimer()
         Me.Close()
         SignupForm.LoadAdminUser()
         SignupForm.Show()
+    End Sub
+
+    Private Sub BackUpToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles BackUpToolStripMenuItem1.Click
+        ResetTimer()
+        Backup1.RestoreDatabase()
+    End Sub
+
+    Private Sub RestoreToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RestoreToolStripMenuItem1.Click
+        ResetTimer()
+        Backup1.RestoreDatabase()
+    End Sub
+
+    Private Sub AuditLogToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AuditLogToolStripMenuItem.Click
+        ResetTimer()
+    End Sub
+
+    Private Sub MainToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MainToolStripMenuItem.Click
+        ResetTimer()
     End Sub
 End Class

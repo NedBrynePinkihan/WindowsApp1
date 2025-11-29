@@ -123,7 +123,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\AuditLogManager.vb" />
+    <Compile Include="AuditDesign.Designer.vb">
+      <DependentUpon>AuditDesign.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AuditDesign.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AuditLogging.vb" />
+    <Compile Include="Backup\Audit.vb" />
+    <Compile Include="Backup\Backup1.vb" />
+    <Compile Include="Backup\Connect.vb" />
     <Compile Include="Module1.vb" />
+    <Compile Include="TimeoutCounterForm.Designer.vb">
+      <DependentUpon>TimeoutCounterForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeoutCounterForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UserAuthentication\LoginForm.Designer.vb">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
@@ -160,12 +176,6 @@
     <Compile Include="Inventory\InventoryListForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormSettings.Designer.vb">
-      <DependentUpon>FormSettings.vb</DependentUpon>
-    </Compile>
-    <Compile Include="FormSettings.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Delete.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -188,6 +198,12 @@
     <Compile Include="UserCrude.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AuditDesign.resx">
+      <DependentUpon>AuditDesign.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeoutCounterForm.resx">
+      <DependentUpon>TimeoutCounterForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserAuthentication\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -205,9 +221,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Inventory\InventoryListForm.resx">
       <DependentUpon>InventoryListForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormSettings.resx">
-      <DependentUpon>FormSettings.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

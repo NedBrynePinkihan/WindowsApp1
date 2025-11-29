@@ -259,6 +259,7 @@ Partial Class UserCrude
 
     ' Renamed to reflect the main class name
     Private Sub UserCrude_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        SetupInactivityTracking(Me)
         ' LoginForm.UpdateActivityTime()
         LoadBookData()
         ' Set initial button text for btnSaveBook (for Insert)
@@ -287,6 +288,7 @@ Partial Class UserCrude
     ' Clears the input fields and sets button states to "Save" mode
     Private Sub ClearBookFields()
         txtPartNumber.Text = ""
+        txtPartName.Text = ""
         txtTitle.Text = ""
         txtAuthor.Text = ""
         txtEdition.Text = ""
@@ -321,6 +323,7 @@ Partial Class UserCrude
 
     ' --- 1. SAVE Button (Insert) ---
     Private Sub btnSaveBook_Click(sender As Object, e As EventArgs) Handles btnSaveBook.Click
+        ResetTimer()
         LoginForm.UpdateActivityTime()
         If Not ValidateBookFields() Then Exit Sub ' <--- Calls the fixed validation function
 
@@ -354,18 +357,20 @@ Partial Class UserCrude
                 'AuditLogManager.LogAction(LoginForm.LoggedInUsername, "Inventory System: Added new Part Number " & lastId & " (" & txtTitle.Text & ")")
             End Using
         Catch ex As Exception
-            MessageBox.Show("Error adding book: " & ex.Message)
+            MessageBox.Show("Error adding Part Number: " & ex.Message)
         Finally
             If conn.State = ConnectionState.Open Then conn.Close()
             LoadBookData()
             ClearBookFields()
         End Try
+        ResetTimer()
     End Sub
 
 
 
     ' **NEW Subroutine for the dedicated Update button**
     Private Sub btnUpdateBook_Click(sender As Object, e As EventArgs) Handles btnUpdateBook.Click
+        ResetTimer()
         LoginForm.UpdateActivityTime()
         If Not ValidateBookFields() Then Exit Sub
 
@@ -385,7 +390,7 @@ Partial Class UserCrude
 
         ' Ensure a BookID is present (meaning a record was selected)
         If String.IsNullOrEmpty(txtPartNumber.Text) Then
-            MessageBox.Show("Select a book to update first.", "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Select a Part Number to update first.", "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
 
@@ -401,10 +406,10 @@ Partial Class UserCrude
                 cmd.Parameters.AddWithValue("@id", txtPartNumber.Text)
 
                 If cmd.ExecuteNonQuery() > 0 Then
-                    MessageBox.Show("Book ID " & txtPartNumber.Text & " updated successfully.")
-                    AuditLogManager.LogAction(LoggedUsername, "Library System: Updated book ID " & txtPartNumber.Text)
+                    MessageBox.Show("Part Number" & txtPartNumber.Text & " updated successfully.")
+                    AuditLogManager.LogAction(LoggedUsername, "Library System: Updated Part Number " & txtPartNumber.Text)
                 Else
-                    MessageBox.Show("Book ID " & txtPartNumber.Text & " not found or no changes were made.")
+                    MessageBox.Show("Part Number " & txtPartNumber.Text & " not found or no changes were made.")
                 End If
             End Using
         Catch ex As Exception
@@ -414,20 +419,22 @@ Partial Class UserCrude
             LoadBookData()
             ClearBookFields()
         End Try
+        ResetTimer()
     End Sub
 
 
     ' --- 3. DELETE Button (Now fully functional when enabled) ---
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        ResetTimer()
         ' LoginForm.UpdateActivityTime()
         If String.IsNullOrEmpty(txtPartNumber.Text) Then
-            MessageBox.Show("Select a book to delete first.", "Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Select a Part Number to delete first.", "Delete Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Exit Sub
         End If
 
         Dim query As String = "DELETE FROM component_inventory_tbl WHERE PartNumber=@id"
 
-        If MessageBox.Show("Are you sure you want to delete book ID " & txtPartNumber.Text & "?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Exit Sub
+        If MessageBox.Show("Are you sure you want to delete Part Number ID " & txtPartNumber.Text & "?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then Exit Sub
 
         Try
             If conn.State <> ConnectionState.Open Then conn.Open()
@@ -441,7 +448,7 @@ Partial Class UserCrude
                 End If
             End Using
         Catch ex As Exception
-            MessageBox.Show("Error deleting book: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error deleting Part Number: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State = ConnectionState.Open Then conn.Close()
             LoadBookData()
@@ -452,6 +459,7 @@ Partial Class UserCrude
 
     ' --- 4. SEARCH Button ---
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        ResetTimer()
         ' LoginForm.UpdateActivityTime()
         If String.IsNullOrEmpty(txtSearch.Text) Then
             LoadBookData()
@@ -472,14 +480,16 @@ Partial Class UserCrude
                 DGVLibrary.DataSource = table
 
                 If table.Rows.Count = 0 Then
-                    MessageBox.Show("No books found matching your search term.", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    MessageBox.Show("No Part Number found matching your search term.", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 End If
             End Using
         Catch ex As Exception
             MessageBox.Show("Error searching: " & ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
             If conn.State = ConnectionState.Open Then conn.Close()
+            ResetTimer()
         End Try
+
     End Sub
 
 
@@ -494,6 +504,7 @@ Partial Class UserCrude
     Private Sub DGVLibrary_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DGVLibrary.CellContentClick
         ' LoginForm.UpdateActivityTime()
         ' Ensure the click is on a valid row, not the header
+        ResetTimer()
         If e.RowIndex >= 0 AndAlso e.RowIndex < DGVLibrary.Rows.Count - 1 Then ' Exclude the new row placeholder
             Dim row As DataGridViewRow = DGVLibrary.Rows(e.RowIndex)
 
@@ -519,6 +530,7 @@ Partial Class UserCrude
         ' Me.Close()
         ' LoginForm.Show()
         MessageBox.Show("Logged out functionality would redirect to the login screen.", "Logout", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        StopTimer()
     End Sub
 
     Friend WithEvents Label5 As Label

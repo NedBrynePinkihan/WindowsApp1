@@ -36,9 +36,9 @@ Partial Class AdminUserManagementForm
         Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AddUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BackupToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RestoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackUpToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RestoreToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AuditLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -133,7 +133,7 @@ Partial Class AdminUserManagementForm
         '
         'MenuStrip1
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MainToolStripMenuItem, Me.MenuToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MainToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(890, 24)
@@ -142,7 +142,7 @@ Partial Class AdminUserManagementForm
         '
         'MainToolStripMenuItem
         '
-        Me.MainToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewToolStripMenuItem, Me.UserDatabaseToolStripMenuItem, Me.AddUserToolStripMenuItem})
+        Me.MainToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewToolStripMenuItem, Me.UserDatabaseToolStripMenuItem, Me.AddUserToolStripMenuItem, Me.BackUpToolStripMenuItem1, Me.RestoreToolStripMenuItem1, Me.AuditLogToolStripMenuItem})
         Me.MainToolStripMenuItem.Name = "MainToolStripMenuItem"
         Me.MainToolStripMenuItem.Size = New System.Drawing.Size(46, 20)
         Me.MainToolStripMenuItem.Text = "Main"
@@ -165,24 +165,23 @@ Partial Class AdminUserManagementForm
         Me.AddUserToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
         Me.AddUserToolStripMenuItem.Text = "Add User"
         '
-        'MenuToolStripMenuItem
+        'BackUpToolStripMenuItem1
         '
-        Me.MenuToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.BackupToolStripMenuItem, Me.RestoreToolStripMenuItem})
-        Me.MenuToolStripMenuItem.Name = "MenuToolStripMenuItem"
-        Me.MenuToolStripMenuItem.Size = New System.Drawing.Size(50, 20)
-        Me.MenuToolStripMenuItem.Text = "Menu"
+        Me.BackUpToolStripMenuItem1.Name = "BackUpToolStripMenuItem1"
+        Me.BackUpToolStripMenuItem1.Size = New System.Drawing.Size(180, 22)
+        Me.BackUpToolStripMenuItem1.Text = "Backup"
         '
-        'BackupToolStripMenuItem
+        'RestoreToolStripMenuItem1
         '
-        Me.BackupToolStripMenuItem.Name = "BackupToolStripMenuItem"
-        Me.BackupToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
-        Me.BackupToolStripMenuItem.Text = "Backup"
+        Me.RestoreToolStripMenuItem1.Name = "RestoreToolStripMenuItem1"
+        Me.RestoreToolStripMenuItem1.Size = New System.Drawing.Size(180, 22)
+        Me.RestoreToolStripMenuItem1.Text = "Restore"
         '
-        'RestoreToolStripMenuItem
+        'AuditLogToolStripMenuItem
         '
-        Me.RestoreToolStripMenuItem.Name = "RestoreToolStripMenuItem"
-        Me.RestoreToolStripMenuItem.Size = New System.Drawing.Size(113, 22)
-        Me.RestoreToolStripMenuItem.Text = "Restore"
+        Me.AuditLogToolStripMenuItem.Name = "AuditLogToolStripMenuItem"
+        Me.AuditLogToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AuditLogToolStripMenuItem.Text = "Audit Log"
         '
         'Label2
         '
@@ -323,9 +322,9 @@ Partial Class AdminUserManagementForm
     Friend WithEvents cmbRole As ComboBox
     Friend WithEvents Timer1 As Timer
     Friend WithEvents Label5 As Label
-    Friend WithEvents MenuToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents BackupToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents RestoreToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UserDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AddUserToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents BackUpToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents RestoreToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents AuditLogToolStripMenuItem As ToolStripMenuItem
 End Class

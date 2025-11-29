@@ -146,7 +146,7 @@ Partial Class AddUserForm
         Me.btnHome.Text = "Home"
         Me.btnHome.UseVisualStyleBackColor = False
         '
-        'Form5
+        'AddUserForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -163,7 +163,7 @@ Partial Class AddUserForm
         Me.Controls.Add(Me.cmbStatus)
         Me.Controls.Add(Me.txtID)
         Me.Controls.Add(Me.Label1)
-        Me.Name = "Form5"
+        Me.Name = "AddUserForm"
         Me.Text = "User Profile"
         Me.ResumeLayout(False)
         Me.PerformLayout()

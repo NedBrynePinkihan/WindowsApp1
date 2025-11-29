@@ -39,7 +39,7 @@ Partial Class SignupForm
         'lblTitle
         '
         Me.lblTitle.AutoSize = True
-        Me.lblTitle.Location = New System.Drawing.Point(139, 9)
+        Me.lblTitle.Location = New System.Drawing.Point(369, 131)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(86, 13)
         Me.lblTitle.TabIndex = 0
@@ -48,7 +48,7 @@ Partial Class SignupForm
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 43)
+        Me.Label2.Location = New System.Drawing.Point(242, 165)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(55, 13)
         Me.Label2.TabIndex = 1
@@ -56,7 +56,7 @@ Partial Class SignupForm
         '
         'txtUsername
         '
-        Me.txtUsername.Location = New System.Drawing.Point(110, 40)
+        Me.txtUsername.Location = New System.Drawing.Point(340, 162)
         Me.txtUsername.Name = "txtUsername"
         Me.txtUsername.Size = New System.Drawing.Size(156, 20)
         Me.txtUsername.TabIndex = 2
@@ -66,7 +66,7 @@ Partial Class SignupForm
         Me.btnRegister.BackColor = System.Drawing.SystemColors.Highlight
         Me.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnRegister.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.btnRegister.Location = New System.Drawing.Point(110, 210)
+        Me.btnRegister.Location = New System.Drawing.Point(340, 332)
         Me.btnRegister.Name = "btnRegister"
         Me.btnRegister.Size = New System.Drawing.Size(75, 23)
         Me.btnRegister.TabIndex = 3
@@ -75,14 +75,14 @@ Partial Class SignupForm
         '
         'txtPassword
         '
-        Me.txtPassword.Location = New System.Drawing.Point(110, 69)
+        Me.txtPassword.Location = New System.Drawing.Point(340, 191)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.Size = New System.Drawing.Size(156, 20)
         Me.txtPassword.TabIndex = 4
         '
         'txtCPassword
         '
-        Me.txtCPassword.Location = New System.Drawing.Point(110, 95)
+        Me.txtCPassword.Location = New System.Drawing.Point(340, 217)
         Me.txtCPassword.Name = "txtCPassword"
         Me.txtCPassword.Size = New System.Drawing.Size(156, 20)
         Me.txtCPassword.TabIndex = 5
@@ -90,7 +90,7 @@ Partial Class SignupForm
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(12, 72)
+        Me.Label3.Location = New System.Drawing.Point(242, 194)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(53, 13)
         Me.Label3.TabIndex = 6
@@ -99,7 +99,7 @@ Partial Class SignupForm
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(12, 98)
+        Me.Label4.Location = New System.Drawing.Point(242, 220)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(91, 13)
         Me.Label4.TabIndex = 7
@@ -108,7 +108,7 @@ Partial Class SignupForm
         'lbl8minChar
         '
         Me.lbl8minChar.AutoSize = True
-        Me.lbl8minChar.Location = New System.Drawing.Point(107, 132)
+        Me.lbl8minChar.Location = New System.Drawing.Point(337, 254)
         Me.lbl8minChar.Name = "lbl8minChar"
         Me.lbl8minChar.Size = New System.Drawing.Size(105, 13)
         Me.lbl8minChar.TabIndex = 8
@@ -117,7 +117,7 @@ Partial Class SignupForm
         'lblNumber
         '
         Me.lblNumber.AutoSize = True
-        Me.lblNumber.Location = New System.Drawing.Point(107, 158)
+        Me.lblNumber.Location = New System.Drawing.Point(337, 280)
         Me.lblNumber.Name = "lblNumber"
         Me.lblNumber.Size = New System.Drawing.Size(89, 13)
         Me.lblNumber.TabIndex = 9
@@ -126,7 +126,7 @@ Partial Class SignupForm
         'lblSpecialchar
         '
         Me.lblSpecialchar.AutoSize = True
-        Me.lblSpecialchar.Location = New System.Drawing.Point(107, 184)
+        Me.lblSpecialchar.Location = New System.Drawing.Point(337, 306)
         Me.lblSpecialchar.Name = "lblSpecialchar"
         Me.lblSpecialchar.Size = New System.Drawing.Size(135, 13)
         Me.lblSpecialchar.TabIndex = 10
@@ -137,7 +137,7 @@ Partial Class SignupForm
         Me.btnBack.BackColor = System.Drawing.Color.Red
         Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnBack.ForeColor = System.Drawing.SystemColors.ControlLightLight
-        Me.btnBack.Location = New System.Drawing.Point(191, 210)
+        Me.btnBack.Location = New System.Drawing.Point(421, 332)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(75, 23)
         Me.btnBack.TabIndex = 11
@@ -149,7 +149,7 @@ Partial Class SignupForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.ClientSize = New System.Drawing.Size(288, 248)
+        Me.ClientSize = New System.Drawing.Size(802, 599)
         Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.lblSpecialchar)
         Me.Controls.Add(Me.lblNumber)

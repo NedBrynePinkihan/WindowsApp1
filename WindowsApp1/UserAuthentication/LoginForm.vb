@@ -70,7 +70,10 @@ Public Class LoginForm
 
     ' --- Login Logic with Audit Log ---
     Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
-        UpdateActivityTime() ' Activity update
+        'UpdateActivityTime() ' Activity update
+
+        SetLoginForm(Me)
+        TimeoutCounterForm.Show()
 
         ' Input Validation: Check for empty fields
         If String.IsNullOrEmpty(txtUsername.Text) OrElse String.IsNullOrEmpty(txtPassword.Text) Then
