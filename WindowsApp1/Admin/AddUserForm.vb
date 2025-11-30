@@ -36,7 +36,7 @@ Public Class AddUserForm
         If txtPassword.Text.Length < 8 OrElse
             Not Regex.IsMatch(txtPassword.Text, "\d") OrElse
             Not Regex.IsMatch(txtPassword.Text, "[\W_]") Then
-            Audit.AddEntry("Failed attempt to create user", "user id='" & txtID.Text &
+            AuditLogging.AddEntry("Failed attempt to create user", "user id='" & txtID.Text &
                            "', username='" & txtUsername.Text &
                            "', status='" & cmbStatus.Text &
                            "', role='" & cmbRole.Text)
@@ -55,7 +55,7 @@ Public Class AddUserForm
                     cmd.Parameters.AddWithValue("@role", cmbRole.Text)
                     cmd.ExecuteNonQuery()
 
-                    Audit.AddEntry("User registration successful", "user id='" & txtID.Text &
+                    AuditLogging.AddEntry("User registration successful", "user id='" & txtID.Text &
                            "', username='" & txtUsername.Text &
                            "', status='" & cmbStatus.Text &
                            "', role='" & cmbRole.Text)
@@ -65,13 +65,13 @@ Public Class AddUserForm
             End Using
         Catch ex As MySqlException
             If ex.Number = 1062 Then
-                Audit.AddEntry("Failed attempt to create user with pre-existing username", "user id='" & txtID.Text &
+                AuditLogging.AddEntry("Failed attempt to create user with pre-existing username", "user id='" & txtID.Text &
                            "', username='" & txtUsername.Text &
                            "', status='" & cmbStatus.Text &
                            "', role='" & cmbRole.Text)
                 MessageBox.Show("Username already exists.")
             Else
-                Audit.AddEntry("Failed attempt to create user", "user id='" & txtID.Text &
+                AuditLogging.AddEntry("Failed attempt to create user", "user id='" & txtID.Text &
                            "', username='" & txtUsername.Text &
                            "', status='" & cmbStatus.Text &
                            "', role='" & cmbRole.Text)
@@ -115,7 +115,7 @@ Public Class AddUserForm
                     cmd.Parameters.AddWithValue("@role", cmbRole.Text)
                     cmd.ExecuteNonQuery()
 
-                    Audit.AddEntry("User modified", "Old Credentials (user id='" &
+                    AuditLogging.AddEntry("User modified", "Old Credentials (user id='" &
                            "', id='" & oldId &
                            "', username='" & oldUsername &
                            "', status='" & oldStatus &
@@ -141,14 +141,14 @@ Public Class AddUserForm
 
                 Dim rowsAffected = cmd.ExecuteNonQuery()
                 If rowsAffected > 0 Then
-                    Audit.AddEntry("User deleted", "user id='" & txtID.Text &
+                    AuditLogging.AddEntry("User deleted", "user id='" & txtID.Text &
                            "', username='" & txtUsername.Text &
                            "', status='" & cmbStatus.Text &
                            "', role='" & cmbRole.Text)
 
                     MessageBox.Show("User removed successfully.")
                 Else
-                    Audit.AddEntry("Failed user deletion attempt", "user id='" & txtID.Text &
+                    AuditLogging.AddEntry("Failed user deletion attempt", "user id='" & txtID.Text &
                            "', username='" & txtUsername.Text &
                            "', status='" & cmbStatus.Text &
                            "', role='" & cmbRole.Text)
@@ -161,7 +161,7 @@ Public Class AddUserForm
             cmbStatus.Text = ""
             cmbRole.Text = ""
         Catch ex As Exception
-            Audit.AddEntry("Failed user deletion attempt", "user id='" & txtID.Text &
+            AuditLogging.AddEntry("Failed user deletion attempt", "user id='" & txtID.Text &
                            "', username='" & txtUsername.Text &
                            "', status='" & cmbStatus.Text &
                            "', role='" & cmbRole.Text)

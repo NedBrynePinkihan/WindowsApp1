@@ -2,7 +2,7 @@
 Partial Class AuditDesign
     Inherits System.Windows.Forms.Form
 
-    'Form overrides dispose to clean up the component list.
+
     <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
@@ -14,12 +14,10 @@ Partial Class AuditDesign
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
+
     Private components As System.ComponentModel.IContainer
 
-    'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
-    'Do not modify it using the code editor.
+
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.dgvAudit = New System.Windows.Forms.DataGridView()
@@ -31,25 +29,25 @@ Partial Class AuditDesign
         'dgvAudit
         '
         Me.dgvAudit.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvAudit.Location = New System.Drawing.Point(83, 12)
+        Me.dgvAudit.Location = New System.Drawing.Point(189, 12)
         Me.dgvAudit.Name = "dgvAudit"
-        Me.dgvAudit.Size = New System.Drawing.Size(614, 231)
+        Me.dgvAudit.Size = New System.Drawing.Size(941, 538)
         Me.dgvAudit.TabIndex = 0
         '
         'btnBack
         '
-        Me.btnBack.Location = New System.Drawing.Point(393, 285)
+        Me.btnBack.Location = New System.Drawing.Point(693, 556)
         Me.btnBack.Name = "btnBack"
-        Me.btnBack.Size = New System.Drawing.Size(75, 23)
+        Me.btnBack.Size = New System.Drawing.Size(116, 47)
         Me.btnBack.TabIndex = 1
         Me.btnBack.Text = "Back"
         Me.btnBack.UseVisualStyleBackColor = True
         '
         'btnView
         '
-        Me.btnView.Location = New System.Drawing.Point(225, 285)
+        Me.btnView.Location = New System.Drawing.Point(525, 556)
         Me.btnView.Name = "btnView"
-        Me.btnView.Size = New System.Drawing.Size(75, 23)
+        Me.btnView.Size = New System.Drawing.Size(116, 47)
         Me.btnView.TabIndex = 2
         Me.btnView.Text = "View"
         Me.btnView.UseVisualStyleBackColor = True
@@ -58,7 +56,7 @@ Partial Class AuditDesign
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(1267, 687)
         Me.Controls.Add(Me.btnView)
         Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.dgvAudit)

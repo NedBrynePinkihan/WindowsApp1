@@ -406,8 +406,8 @@ Partial Class UserCrude
                 cmd.Parameters.AddWithValue("@id", txtPartNumber.Text)
 
                 If cmd.ExecuteNonQuery() > 0 Then
+                    AuditLogging.AddEntry("Inventory System: Updated Part Number", "Username: " & txtPartNumber.Text)
                     MessageBox.Show("Part Number" & txtPartNumber.Text & " updated successfully.")
-                    AuditLogManager.LogAction(LoggedUsername, "Library System: Updated Part Number " & txtPartNumber.Text)
                 Else
                     MessageBox.Show("Part Number " & txtPartNumber.Text & " not found or no changes were made.")
                 End If

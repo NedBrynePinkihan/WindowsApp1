@@ -1,10 +1,11 @@
-﻿Imports MySql.Data.MySqlClient
+﻿Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ListView
+Imports MySql.Data.MySqlClient
 
 Public Class AuditLogging
 
     Public Shared Sub AddEntry(userID As Integer, username As String, role As String, actionType As String, details As String)
         Try
-            Using conn = Connect.Create()
+            Using conn = MySqlConnector.Connect()
                 conn.Open()
 
                 Dim query As String =
@@ -36,6 +37,10 @@ Public Class AuditLogging
 
     Public Shared Sub AddEntry(actionType As String, details As String)
         AddEntry(LoggedUserId, LoggedUsername, LoggedUserRole, actionType, details)
+    End Sub
+
+    Public Shared Sub AddEntry(actionType As String)
+        AddEntry(actionType, "")
     End Sub
 End Class
 

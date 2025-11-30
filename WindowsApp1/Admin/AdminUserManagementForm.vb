@@ -10,12 +10,12 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     ' This ensures the mysqldump.exe and mysql.exe tools can be found.
     Private Const MYSQL_BIN_PATH As String = "C:\Program Files\MySQL\MySQL Server 8.0\bin\"
 
-    Dim conn As New MySqlConnection("server=localhost; userid=root; password=root; database=labact2")
+    Dim conn = MySqlConnector.Connect()
 
     ' Load DataGridView on load
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetupInactivityTracking(Me)
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         If LoggedUserRole <> "Admin" Then
             MessageBox.Show("Access Denied. Only Administrators can view User Management.", "Security Alert", MessageBoxButtons.OK, MessageBoxIcon.Stop)
             Me.Close()
@@ -29,11 +29,13 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     Private Sub LoadUserData()
         Dim query As String = "SELECT id, username, password, role, status FROM user_tbl"
         Try
-            conn.Open()
-            Dim adapter As New MySqlDataAdapter(query, conn)
-            Dim table As New DataTable()
-            adapter.Fill(table)
-            DGVUserAdmin.DataSource = table
+            Using conn = MySqlConnector.Connect()
+                conn.Open()
+                Dim adapter As New MySqlDataAdapter(query, conn)
+                Dim table As New DataTable()
+                adapter.Fill(table)
+                DGVUserAdmin.DataSource = table
+            End Using
         Catch ex As Exception
             MessageBox.Show("Error loading user data: " & ex.Message)
         Finally
@@ -58,11 +60,11 @@ Public Class AdminUserManagementForm ' Admin User Management Form
                 cmd.Parameters.AddWithValue("@id", userIdToRemove)
                 Dim rowsAffected = cmd.ExecuteNonQuery()
                 If rowsAffected > 0 Then
+                    AuditLogging.AddEntry("User Management: Deleted user ID ", "Deleted user ID " & userIdToRemove)
                     MessageBox.Show("User removed successfully.")
-                    AuditLogManager.LogAction(LoggedUsername, "User Management: Deleted user ID " & userIdToRemove)
                 Else
+                    AuditLogging.AddEntry("User Management: Failed attempt to delete user ID ", "Deleted user ID " & userIdToRemove)
                     MessageBox.Show("No user found with the specified ID.")
-                    AuditLogManager.LogAction(LoggedUsername, "User Management: Failed attempt to delete user ID " & userIdToRemove, isSuccess:=False)
                 End If
             End Using
             LoadUserData()
@@ -100,8 +102,8 @@ Public Class AdminUserManagementForm ' Admin User Management Form
                 Dim rowsAffected = cmd.ExecuteNonQuery()
 
                 If rowsAffected > 0 Then
+                    AuditLogging.AddEntry("User Management ", "Updated user ID " & userIdToUpdate & " to Status=" & newStatus & ", Role=" & newRole)
                     MessageBox.Show("User ID " & userIdToUpdate & " updated successfully (Status: " & newStatus & ", Role: " & newRole & ").")
-                    AuditLogManager.LogAction(LoggedUsername, "User Management: Updated user ID " & userIdToUpdate & " to Status=" & newStatus & ", Role=" & newRole)
                 Else
                     MessageBox.Show("No user found with ID " & userIdToUpdate & " to update.")
                 End If
@@ -169,7 +171,7 @@ Public Class AdminUserManagementForm ' Admin User Management Form
 
     ' Populate fields on DataGridView single-click
     Private Sub DGVUserAdmin_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DGVUserAdmin.CellContentClick
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         If e.RowIndex >= 0 Then
             Dim row As DataGridViewRow = DGVUserAdmin.Rows(e.RowIndex)
             txtID.Text = row.Cells("id").Value.ToString()
@@ -191,11 +193,11 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     ' --- Navigation Menu Clicks ---
 
     Private Sub LogoutToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        AuditLogManager.LogAction(LoggedUsername, "Logged out from Admin form.")
+        AuditLogging.AddEntry("Logged out from Admin form.")
         LoggedUsername = "" ' Clear session info
         LoggedUserRole = ""
         Me.Close()
-        LoginForm.Show()
+
     End Sub
 
     Private Sub AddProfileToolStripMenuItem_Click(sender As Object, e As EventArgs)
@@ -204,19 +206,14 @@ Public Class AdminUserManagementForm ' Admin User Management Form
     End Sub
 
     Private Sub SettingsToolStripMenuItem_Click(sender As Object, e As EventArgs)
-        LoginForm.UpdateActivityTime()
-    End Sub
-
-    Private Sub ViewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ViewToolStripMenuItem.Click
         ResetTimer()
     End Sub
 
-    Private Sub UserDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UserDatabaseToolStripMenuItem.Click
-        ' Assuming UserCrude form exists
-        UserCrude.Show()
+    Private Sub ViewToolStripMenuItem_Click(sender As Object, e As EventArgs)
+        ResetTimer()
     End Sub
 
-    Private Sub Label5_Click(sender As Object, e As EventArgs) Handles Label5.Click
+    Private Sub Label5_Click(sender As Object, e As EventArgs)
 
     End Sub
 
@@ -233,19 +230,38 @@ Public Class AdminUserManagementForm ' Admin User Management Form
 
     Private Sub BackUpToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles BackUpToolStripMenuItem1.Click
         ResetTimer()
-        Backup1.RestoreDatabase()
+        Recovery.BackupToFile()
     End Sub
 
     Private Sub RestoreToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles RestoreToolStripMenuItem1.Click
         ResetTimer()
-        Backup1.RestoreDatabase()
+
+        Recovery.RestoreFromFile()
     End Sub
 
     Private Sub AuditLogToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AuditLogToolStripMenuItem.Click
         ResetTimer()
+        Me.Hide()
+        AuditDesign.Show()
     End Sub
 
     Private Sub MainToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MainToolStripMenuItem.Click
         ResetTimer()
+    End Sub
+
+    Private Sub UserDatabaseToolStripMenuItem_Click_1(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub InventoryManagementToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles InventoryManagementToolStripMenuItem.Click
+
+        Me.Hide()
+        InventoryManagementForm.Show()
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        ResetTimer()
+        Me.Hide()
+        LoginForm.Show()
     End Sub
 End Class

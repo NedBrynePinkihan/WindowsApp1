@@ -88,7 +88,7 @@ Public Class InventoryListForm ' Main Library System Form
                 Dim lastId As Long = Convert.ToInt64(New MySqlCommand("SELECT LAST_INSERT_ID();", conn).ExecuteScalar())
 
                 MessageBox.Show("Part Number added successfully ")
-                AuditLogManager.LogAction(LoggedUsername, "Inventory System: Added new Part Number " & lastId & " (" & txtTitle.Text & ")")
+                AuditLogging.AddEntry("Inventory System: Added new Part Number", "Part Number" & lastId & " (" & txtTitle.Text & ")")
             End Using
         Catch ex As Exception
             MessageBox.Show("Error adding Part Number: " & ex.Message)
@@ -132,8 +132,8 @@ Public Class InventoryListForm ' Main Library System Form
                 cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtBookID.Text))
 
                 If cmd.ExecuteNonQuery() > 0 Then
+                    AuditLogging.AddEntry("Inventory System: Updated Part Numbeer", "Part Number: " & txtBookID.Text)
                     MessageBox.Show("Part Number " & txtBookID.Text & " updated successfully.")
-                    AuditLogManager.LogAction(LoggedUsername, "Library System: Updated Part Numbeer " & txtBookID.Text)
                 Else
                     MessageBox.Show("Part Number" & txtBookID.Text & " not found or no changes were made.")
                 End If
@@ -167,8 +167,8 @@ Public Class InventoryListForm ' Main Library System Form
             Using cmd As New MySqlCommand(query, conn)
                 cmd.Parameters.AddWithValue("@id", bookIdToDelete)
                 If cmd.ExecuteNonQuery() > 0 Then
+                    AuditLogging.AddEntry("Inventory System: Deleted record for Part Number", "Part Number: " & bookIdToDelete)
                     MessageBox.Show("Part Number " & bookIdToDelete & " deleted successfully.")
-                    AuditLogManager.LogAction(LoggedUsername, "Library System: Deleted record for Part Number " & bookIdToDelete)
                 End If
             End Using
         Catch ex As Exception

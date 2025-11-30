@@ -23,8 +23,8 @@ Public Class SignupForm
         End Using
     End Function
 
-    Private Sub Form4_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        LoginForm.UpdateActivityTime()
+    Private Sub SignupForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ResetTimer()
         lbl8minChar.ForeColor = Color.Red
         lblNumber.ForeColor = Color.Red
         lblSpecialchar.ForeColor = Color.Red
@@ -52,7 +52,7 @@ Public Class SignupForm
     End Sub
 
     Private Sub btnRegister_Click(sender As Object, e As EventArgs) Handles btnRegister.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         ' --- Validation checks (Existing and improved for completeness) ---
         If txtUsername.Text = "" Or txtPassword.Text = "" Or txtCPassword.Text = "" Then
             MessageBox.Show("Please fill in all fields.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -81,7 +81,7 @@ Public Class SignupForm
                     cmd.Parameters.AddWithValue("@password", ComputeSHA256Hash(txtPassword.Text))
                     cmd.ExecuteNonQuery()
 
-                    AuditLogManager.LogAction(txtUsername.Text, "New user registered (Status: Pending, Role: Staff)")
+                    AuditLogging.AddEntry(0, txtUsername.Text, "Staff", "New user registered", "Username: " & txtUsername.Text)
                     MessageBox.Show("User registered successfully! Your account is currently Pending authorization.", "Registration Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                     Me.Close()
@@ -94,17 +94,17 @@ Public Class SignupForm
             End Using
         Catch ex As MySqlException
             If ex.Number = 1062 Then ' MySQL error code for Duplicate entry for key 'PRIMARY' or unique constraint
+                AuditLogging.AddEntry("Username already exists. Please choose a different username.", "Username: " & txtUsername.Text)
                 MessageBox.Show("Username already exists. Please choose a different username.", "Registration Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                AuditLogManager.LogAction(txtUsername.Text, "Registration Failure - Username already exists.", isSuccess:=False)
             Else
+                AuditLogging.AddEntry("Database Error during registration", "Username: " & txtUsername.Text)
                 MsgBox("Database Error: " & ex.Message)
-                AuditLogManager.LogAction("SYSTEM", "Database Error during registration: " & ex.Message, isSuccess:=False)
             End If
         End Try
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
-        LoginForm.UpdateActivityTime()
+        ResetTimer()
         Me.Close()
 
         If LoggedUserRole = "Admin" Then

@@ -1,4 +1,4 @@
-﻿Module Module1
+﻿Module UserMonitoring
     Public LoggedUserId As Integer
     Public LoggedUsername As String
     Public LoggedUserRole As String = ""
@@ -6,7 +6,7 @@
 
     Public inactivityTimer As New Timer()
     'Public inactivityLimit As Integer = 5 * 60
-    Public inactivityLimit As Integer = 7
+    Public inactivityLimit As Integer = 60
     Public remainingTime As Integer = inactivityLimit
     Public currentLabel As Label = TimeoutCounterForm.lblTimeoutTimer
 
@@ -18,8 +18,6 @@
         LoggedUserRole = Role
         LoggedStatus = Status
     End Sub
-
-
 
     Public Sub SetLoginForm(loginForm As LoginForm)
         LoginFormSingle = loginForm
@@ -39,7 +37,6 @@
         form.Close()
     End Sub    ' Call this in each form's Load
 
-
     Private Sub ClearUserCredentials()
         LoggedUserId = 0
         LoggedUsername = ""
@@ -48,15 +45,15 @@
     End Sub
 
     Public Sub SetupInactivityTracking(currentForm As Form)
-        'currentLabel = displayLabel
+
         remainingTime = inactivityLimit
 
-        ' Configure timer to tick every second
+
         inactivityTimer.Interval = 1000 ' 1 second
         AddHandler inactivityTimer.Tick, AddressOf TimerTick
         inactivityTimer.Start()
 
-        ' Hook form activity
+
         AddHandler currentForm.MouseMove, Sub() ResetTimer()
         AddHandler currentForm.KeyPress, Sub() ResetTimer()
 
@@ -74,19 +71,19 @@
 
             End If
 
-            ' Important → Recursively search inside GroupBoxes, Panels, TabPages, etc.
+
             If ctrl.HasChildren Then
                 AddHandlerToTextboxes(ctrl)
             End If
         Next
     End Sub
-    ' Reset timer on activity
+
     Public Sub ResetTimer()
         remainingTime = inactivityLimit
         UpdateLabel()
     End Sub
 
-    ' Called every second
+
     Private Sub TimerTick(sender As Object, e As EventArgs)
         remainingTime -= 1
         UpdateLabel()
@@ -123,7 +120,7 @@
         Dim openForms() As Form = Application.OpenForms.Cast(Of Form)().ToArray()
 
         For Each f As Form In openForms
-            If f.Name <> "Form1" Then
+            If f.Name <> "LoginForm" Then
                 f.Close()
             End If
         Next

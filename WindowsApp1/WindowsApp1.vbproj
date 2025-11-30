@@ -122,18 +122,28 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin\AuditLogManager.vb" />
-    <Compile Include="AuditDesign.Designer.vb">
-      <DependentUpon>AuditDesign.vb</DependentUpon>
+    <Compile Include="Admin\AdminUserManagementForm.Designer.vb">
+      <DependentUpon>AdminUserManagementForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="AuditDesign.vb">
+    <Compile Include="Admin\AdminUserManagementForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AuditLogging.vb" />
-    <Compile Include="Backup\Audit.vb" />
-    <Compile Include="Backup\Backup1.vb" />
-    <Compile Include="Backup\Connect.vb" />
-    <Compile Include="Module1.vb" />
+    <Compile Include="Admin\AuditDesign.Designer.vb">
+      <DependentUpon>AuditDesign.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\AuditDesign.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\AuditLogging.vb" />
+    <Compile Include="Database\Recovery.vb" />
+    <Compile Include="Database\MySqlConnector.vb" />
+    <Compile Include="Inventory\InventoryManagementForm.Designer.vb">
+      <DependentUpon>InventoryManagementForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\InventoryManagementForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\UserMonitoring.vb" />
     <Compile Include="TimeoutCounterForm.Designer.vb">
       <DependentUpon>TimeoutCounterForm.vb</DependentUpon>
     </Compile>
@@ -144,12 +154,6 @@
       <DependentUpon>LoginForm.vb</DependentUpon>
     </Compile>
     <Compile Include="UserAuthentication\LoginForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Admin\AdminUserManagementForm.Designer.vb">
-      <DependentUpon>AdminUserManagementForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\AdminUserManagementForm.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UserAuthentication\UnauthorizedForm.Designer.vb">
@@ -170,12 +174,6 @@
     <Compile Include="Admin\AddUserForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Inventory\InventoryListForm.Designer.vb">
-      <DependentUpon>InventoryListForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Inventory\InventoryListForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Delete.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -192,23 +190,22 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="UserCrude.Designer.vb">
-      <DependentUpon>UserCrude.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UserCrude.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AuditDesign.resx">
+    <EmbeddedResource Include="Admin\AdminUserManagementForm.resx">
+      <DependentUpon>AdminUserManagementForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Admin\AuditDesign.resx">
       <DependentUpon>AuditDesign.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inventory\InventoryManagementForm.resx">
+      <DependentUpon>InventoryManagementForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeoutCounterForm.resx">
       <DependentUpon>TimeoutCounterForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserAuthentication\LoginForm.resx">
       <DependentUpon>LoginForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Admin\AdminUserManagementForm.resx">
-      <DependentUpon>AdminUserManagementForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserAuthentication\UnauthorizedForm.resx">
       <DependentUpon>UnauthorizedForm.vb</DependentUpon>
@@ -219,17 +216,11 @@
     <EmbeddedResource Include="Admin\AddUserForm.resx">
       <DependentUpon>AddUserForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Inventory\InventoryListForm.resx">
-      <DependentUpon>InventoryListForm.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserCrude.resx">
-      <DependentUpon>UserCrude.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

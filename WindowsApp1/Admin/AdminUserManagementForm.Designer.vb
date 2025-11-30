@@ -33,11 +33,13 @@ Partial Class AdminUserManagementForm
         Me.Label4 = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.MainToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ViewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UserDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.InventoryManagementToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.AddUserToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.BackUpToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
         Me.RestoreToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.AuditLogToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -48,7 +50,7 @@ Partial Class AdminUserManagementForm
         Me.cmbStatus = New System.Windows.Forms.ComboBox()
         Me.cmbRole = New System.Windows.Forms.ComboBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Button2 = New System.Windows.Forms.Button()
         CType(Me.DGVUserAdmin, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -142,45 +144,54 @@ Partial Class AdminUserManagementForm
         '
         'MainToolStripMenuItem
         '
-        Me.MainToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewToolStripMenuItem, Me.UserDatabaseToolStripMenuItem, Me.AddUserToolStripMenuItem, Me.BackUpToolStripMenuItem1, Me.RestoreToolStripMenuItem1, Me.AuditLogToolStripMenuItem})
+        Me.MainToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.InventoryManagementToolStripMenuItem, Me.ToolStripSeparator3, Me.AddUserToolStripMenuItem, Me.ToolStripSeparator2, Me.BackUpToolStripMenuItem1, Me.RestoreToolStripMenuItem1, Me.ToolStripSeparator1, Me.AuditLogToolStripMenuItem})
         Me.MainToolStripMenuItem.Name = "MainToolStripMenuItem"
         Me.MainToolStripMenuItem.Size = New System.Drawing.Size(46, 20)
         Me.MainToolStripMenuItem.Text = "Main"
         '
-        'ViewToolStripMenuItem
+        'InventoryManagementToolStripMenuItem
         '
-        Me.ViewToolStripMenuItem.Name = "ViewToolStripMenuItem"
-        Me.ViewToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.ViewToolStripMenuItem.Text = "View"
+        Me.InventoryManagementToolStripMenuItem.Name = "InventoryManagementToolStripMenuItem"
+        Me.InventoryManagementToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.InventoryManagementToolStripMenuItem.Text = "Inventory Management"
         '
-        'UserDatabaseToolStripMenuItem
+        'ToolStripSeparator3
         '
-        Me.UserDatabaseToolStripMenuItem.Name = "UserDatabaseToolStripMenuItem"
-        Me.UserDatabaseToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.UserDatabaseToolStripMenuItem.Text = "User Database"
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(195, 6)
         '
         'AddUserToolStripMenuItem
         '
         Me.AddUserToolStripMenuItem.Name = "AddUserToolStripMenuItem"
-        Me.AddUserToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AddUserToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
         Me.AddUserToolStripMenuItem.Text = "Add User"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(195, 6)
         '
         'BackUpToolStripMenuItem1
         '
         Me.BackUpToolStripMenuItem1.Name = "BackUpToolStripMenuItem1"
-        Me.BackUpToolStripMenuItem1.Size = New System.Drawing.Size(180, 22)
+        Me.BackUpToolStripMenuItem1.Size = New System.Drawing.Size(198, 22)
         Me.BackUpToolStripMenuItem1.Text = "Backup"
         '
         'RestoreToolStripMenuItem1
         '
         Me.RestoreToolStripMenuItem1.Name = "RestoreToolStripMenuItem1"
-        Me.RestoreToolStripMenuItem1.Size = New System.Drawing.Size(180, 22)
+        Me.RestoreToolStripMenuItem1.Size = New System.Drawing.Size(198, 22)
         Me.RestoreToolStripMenuItem1.Text = "Restore"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(195, 6)
         '
         'AuditLogToolStripMenuItem
         '
         Me.AuditLogToolStripMenuItem.Name = "AuditLogToolStripMenuItem"
-        Me.AuditLogToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.AuditLogToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
         Me.AuditLogToolStripMenuItem.Text = "Audit Log"
         '
         'Label2
@@ -258,21 +269,22 @@ Partial Class AdminUserManagementForm
         Me.Timer1.Enabled = True
         Me.Timer1.Interval = 1000
         '
-        'Label5
+        'Button2
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(279, 368)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(98, 13)
-        Me.Label5.TabIndex = 28
-        Me.Label5.Text = "Idle Time: 00:00:00"
+        Me.Button2.BackColor = System.Drawing.Color.Brown
+        Me.Button2.Location = New System.Drawing.Point(786, 37)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(92, 42)
+        Me.Button2.TabIndex = 28
+        Me.Button2.Text = "Logout"
+        Me.Button2.UseVisualStyleBackColor = False
         '
         'AdminUserManagementForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(890, 478)
-        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.cmbRole)
         Me.Controls.Add(Me.cmbStatus)
         Me.Controls.Add(Me.txtPassword)
@@ -311,7 +323,6 @@ Partial Class AdminUserManagementForm
     Friend WithEvents Label4 As Label
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents MainToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ViewToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Label2 As Label
     Friend WithEvents Button1 As Button
     Friend WithEvents Label3 As Label
@@ -321,10 +332,13 @@ Partial Class AdminUserManagementForm
     Friend WithEvents cmbStatus As ComboBox
     Friend WithEvents cmbRole As ComboBox
     Friend WithEvents Timer1 As Timer
-    Friend WithEvents Label5 As Label
-    Friend WithEvents UserDatabaseToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents InventoryManagementToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AddUserToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents BackUpToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents RestoreToolStripMenuItem1 As ToolStripMenuItem
     Friend WithEvents AuditLogToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents Button2 As Button
 End Class
