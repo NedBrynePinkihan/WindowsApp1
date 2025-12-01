@@ -22,6 +22,6 @@ CREATE TABLE component_inventory_tbl
 
 INSERT INTO component_inventory_tbl
 (PartNumber, Name, Manufacturer, Quantity, Typeofvehicle) VALUES
-('JC3Z6049A','Yamaha', 20, 'Scrambler'),
-('BC3Z6500B', 'Honda', 9, 'Sports');
+('JC3Z6049A','Cylinder Head', 'Yamaha', 20, 'Scrambler'),
+('BC3Z6500B', 'Cylinde Block', 'Honda', 9, 'Sports');
 
